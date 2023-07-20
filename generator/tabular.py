@@ -1,29 +1,15 @@
 import pandas as pd
 import numpy as np
 
-class TabularGenerator:
-    def generate_noise(self, rows, cols):
-        return np.random.normal(0, 1, (rows, cols))
+class SyntheticTabularGenerator:
+    def __init__(self, schema: dict):
+        self.schema = schema
 
-    def generate_data(self, n_samples=1000):
-        data = {
-            "age": np.random.randint(18, 80, n_samples),
-            "income": np.random.normal(50000, 15000, n_samples),
-            "active": np.random.choice([0, 1], n_samples)
-        }
+    def generate(self, n_samples: int = 1000) -> pd.DataFrame:
+        data = {}
+        for col, dtype in self.schema.items():
+            if dtype == 'int':
+                data[col] = np.random.randint(0, 100, n_samples)
+            elif dtype == 'float':
+                data[col] = np.random.randn(n_samples)
         return pd.DataFrame(data)
-
-if __name__ == "__main__":
-    gen = TabularGenerator()
-    df = gen.generate_data()
-    print(df.head())
-# SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
-
-
-
-
-
-
-
-
-
